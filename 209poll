@@ -12,7 +12,7 @@ if ARGV.length != 3
   exit(84)
 end
 for i in 0..2
-  if ARGV[i] !~ /^[0-9]+(\.[0-9]+)?$/
+  if ARGV[i] !~ /^[0-9]+(\.[0-9]+)?$/ || ARGV[i].to_f < 0
     print "Invalid argument: #{ARGV[i]}\n"
     exit(84)
   end
