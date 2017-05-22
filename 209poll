@@ -1,0 +1,41 @@
+#!/usr/bin/ruby -w
+# coding: utf-8
+
+require 'csv'
+
+if ARGV[0] == "-h"
+  print "USAGE\n\t\t./209dowels pSize sSize p\n\nDESCRIPTION\n\t\tpSizei\tsize of the population\n\t\tsSize\tsize of the sample (supposed to be representative)\n\t\tp\tpercentage of voting intentions for a specific candidate\n"
+  exit(0)
+end
+if ARGV.length != 3
+  print "Program needs 3 arguments: got #{ARGV.length}\n"
+  exit(84)
+end
+for i in 0..2
+  if ARGV[i] !~ /^[0-9]+(\.[0-9]+)?$/
+    print "Invalid argument: #{ARGV[i]}\n"
+    exit(84)
+  end
+end
+if ARGV[0].to_i < ARGV[1].to_i
+  print "sSize can't be greater than pSize\n"
+  exit(84)
+end
+if ARGV[2].to_f > 100.0
+  print "p can't be greater than 100\n"
+  exit (84)
+end
+print "population size:\t\t#{ARGV[0]}\nsample size:\t\t\t#{ARGV[1]}\nvoting intentions:\t\t#{ARGV[2]}%\n"
+$pSize = ARGV[0].to_f
+$sSize = ARGV[1].to_f
+$p = ARGV[2].to_f / 100.0
+$v = $p * (1.0 - $p) / $sSize * ($pSize - $sSize) / ($pSize - 1.0)
+printf("variance:\t\t\t%.6f\n", $v)
+$e = Math.sqrt($v)
+$min = ($p - 1.96 * $e) * 100
+$max = ($p + 1.96 * $e) * 100
+printf("95%% confidence interval:\t[%.2f%% : %.2f%%]\n", $min, $max)
+$min = ($p - 2.58 * $e) * 100
+$max = ($p + 2.58 * $e) * 100
+printf("99%% confidence interval:\t[%.2f%% : %.2f%%]\n", $min, $max)
+exit(0)
