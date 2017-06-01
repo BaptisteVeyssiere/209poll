@@ -34,8 +34,20 @@ printf("variance:\t\t\t%.6f\n", $v)
 $e = Math.sqrt($v)
 $min = ($p - 1.96 * $e) * 100
 $max = ($p + 1.96 * $e) * 100
-printf("95%% confidence interval:\t[%.2f%% : %.2f%%]\n", $min, $max)
+if $min < 0
+  $min = 0
+end
+if $max > 100
+  $max = 100
+end
+printf("95%% confidence interval:\t[%.2f%% ; %.2f%%]\n", $min, $max)
 $min = ($p - 2.58 * $e) * 100
 $max = ($p + 2.58 * $e) * 100
-printf("99%% confidence interval:\t[%.2f%% : %.2f%%]\n", $min, $max)
+if $min < 0
+  $min = 0
+end
+if $max > 100
+  $max = 100
+end
+printf("99%% confidence interval:\t[%.2f%% ; %.2f%%]\n", $min, $max)
 exit(0)
